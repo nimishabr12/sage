@@ -1,9 +1,21 @@
-import { NextAuthOptions } from 'next-auth';
+import { NextAuthOptions, User } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import GoogleProvider from 'next-auth/providers/google';
 import { supabase } from './supabase';
 
 export const authOptions: NextAuthOptions = {
   providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID || '',
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
+      authorization: {
+        params: {
+          prompt: 'consent',
+          access_type: 'offline',
+          response_type: 'code',
+        },
+      },
+    }),
     CredentialsProvider({
       name: 'Email',
       credentials: {
@@ -61,7 +73,41 @@ export const authOptions: NextAuthOptions = {
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async signIn({ user, account, profile }) {
+      // Handle Google OAuth sign-in
+      if (account?.provider === 'google' && user.email) {
+        try {
+          // Check if user already exists
+          const { data: existingUser } = await supabase
+            .from('users')
+            .select('id')
+            .eq('email', user.email)
+            .single();
+
+          if (!existingUser) {
+            // Create new user profile for Google OAuth users
+            const username = user.email.split('@')[0];
+            const { error } = await supabase.from('users').insert({
+              id: user.id,
+              email: user.email,
+              username: username,
+              avatar_url: user.image,
+              timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+            });
+
+            if (error) {
+              console.error('Error creating user profile:', error);
+              return false;
+            }
+          }
+        } catch (error) {
+          console.error('Sign in error:', error);
+          return false;
+        }
+      }
+      return true;
+    },
+    async jwt({ token, user, account }) {
       if (user) {
         token.id = user.id;
         token.email = user.email;

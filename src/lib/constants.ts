@@ -12,8 +12,8 @@ export const ASCENDANTS = [
     name: 'Lumis',
     title: 'The Light Weaver',
     description: 'Ethereal creatures of luminescence. Known for clarity and insight.',
-    color: '#60A5FA',
-    starter: false,
+    color: '#EA580C',
+    starter: true,
   },
   {
     id: 'noctis',
