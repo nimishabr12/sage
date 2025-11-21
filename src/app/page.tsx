@@ -16,11 +16,11 @@ export default function HomePage() {
         </p>
 
         <div className="flex gap-4 justify-center">
-          <Link href="/auth" className="btn-primary">
+          <Link href="/auth/signup" className="btn-primary">
             Get Started
           </Link>
-          <Link href="/about" className="btn-secondary">
-            Learn More
+          <Link href="/auth/login" className="btn-secondary">
+            Sign In
           </Link>
         </div>
 
