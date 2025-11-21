@@ -6,7 +6,7 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[]
 
-export interface Database {
+export type Database = {
   public: {
     Tables: {
       users: {
@@ -52,6 +52,7 @@ export interface Database {
           created_at?: string
           updated_at?: string
         }
+        Relationships: []
       }
       ascendants: {
         Row: {
@@ -84,6 +85,7 @@ export interface Database {
           created_at?: string
           updated_at?: string
         }
+        Relationships: []
       }
       focus_sessions: {
         Row: {
@@ -116,6 +118,7 @@ export interface Database {
           was_completed?: boolean
           created_at?: string
         }
+        Relationships: []
       }
       survey_responses: {
         Row: {
@@ -148,6 +151,7 @@ export interface Database {
           question_5_productivity_rating?: number | null
           created_at?: string
         }
+        Relationships: []
       }
       friendships: {
         Row: {
@@ -174,6 +178,7 @@ export interface Database {
           created_at?: string
           updated_at?: string
         }
+        Relationships: []
       }
       leaderboard_cache: {
         Row: {
@@ -203,6 +208,7 @@ export interface Database {
           current_level?: number
           updated_at?: string
         }
+        Relationships: []
       }
     }
     Views: {
@@ -220,6 +226,7 @@ export interface Database {
           sessions_last_7_days: number
           sessions_last_30_days: number
         }
+        Relationships: []
       }
       leaderboard_view: {
         Row: {
@@ -232,6 +239,7 @@ export interface Database {
           total_sessions: number
           rank: number
         }
+        Relationships: []
       }
     }
     Functions: {
@@ -241,6 +249,12 @@ export interface Database {
         }
         Returns: number
       }
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
     }
   }
 }

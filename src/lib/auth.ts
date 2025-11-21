@@ -53,7 +53,7 @@ export const authOptions: NextAuthOptions = {
             id: userData.id,
             email: userData.email,
             name: userData.username,
-            image: userData.avatar_url,
+            image: userData.avatar_url ?? undefined,
           };
         } catch (error) {
           console.error('Auth error:', error);
@@ -91,7 +91,7 @@ export const authOptions: NextAuthOptions = {
               id: user.id,
               email: user.email,
               username: username,
-              avatar_url: user.image,
+              avatar_url: user.image ?? null,
               timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
             });
 
